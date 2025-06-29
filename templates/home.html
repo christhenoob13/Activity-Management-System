@@ -1,10 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<ul class="grid md:grid-cols-2 bg-gray-300">
-  <li class="flex">
-    <div></div>
+<ul class="grid md:grid-cols-2 m-3 p-4 bg-green-50 shadow-lg rounded-lg gap-2">
+  <h2 class="text-lg text-green-800">Subjects</h2>
+  <span></span><!-- Second Column -->
+  {% for subject in subjects %}
+  <li class="list-subject">
+    <div>
+      <p class="text-md text-emerald-900">{{ subject.subject }}</p>
+      <p class="text-xs text-gray-400">{{ subject.teacher }}</p>
+    </div>
+    <div>
+      <button class="redirect-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+        </svg>
+      </button>
+    </div>
   </li>
+  {% else %}
+  <li class="text-center border-2 border-dashed border-green-200 py-5 rounded-lg">
+    <p class="text-xl text-emerald-800">No subjects available</p>
+  </li>
+  {% endfor %}
 </ul>
 
+{% endblock %}
+{% block jss %}
+<style type="text/tailwindcss">
+  .list-subject{
+    @apply bg-emerald-50 p-2 px-3 rounded-md border flex justify-between items-center gap-2
+  }
+  .redirect-btn{
+    @apply border border-green-800 text-green-800 hover:bg-green-800 hover:text-green-100 py-2 px-3 rounded-full text-sm
+  }
+</style>
 {% endblock %}
