@@ -7,8 +7,8 @@
   {% for subject in subjects %}
   <li class="list-subject">
     <div>
-      <p class="text-md text-emerald-900">{{ subject.subject }}</p>
-      <p class="text-xs text-gray-400">{{ subject.teacher }}</p>
+      <p class="text-md text-emerald-900">{{ subjects[subject].subject }}</p>
+      <p class="text-xs text-gray-400">{{ subjects[subject].teacher }}</p>
     </div>
     <div>
       <button class="redirect-btn">

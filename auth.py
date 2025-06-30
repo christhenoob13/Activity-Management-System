@@ -7,6 +7,13 @@ from flask import (
 )
 auth = Blueprint('auth',__name__)
 
+@auth.route('/logout', methods=['GET'])
+def logout():
+  if not session.get('is_login'):
+    return redirect(url_for('auth.login'))
+  del session['is_login']
+  return redirect(url_for('auth.login'))
+
 @auth.route('/login', methods=['GET','POST'])
 def login():
   if session.get('is_login'):
@@ -28,3 +35,11 @@ def login():
     error = "Invalid username or password"
     # TODO: logic to add data in database or tbrow an error
   return render_template('login.html', error=error)
+
+"""
+@auth.route('/signup', methods=['GET', 'POST'])
+def signup():
+  if request.method == 'GET':
+    return render_template('signup.html')
+  form = request.form
+"""

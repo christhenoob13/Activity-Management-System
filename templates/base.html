@@ -9,8 +9,9 @@
 </head>
 <body class="bg-green-100 select-none">
   
-  {% include 'header.html' %}
-  
+  {% if show_head %}
+    {% include 'header.html' %}
+  {% endif %}
   <div class="container mx-auto overflow-hidden">
   {% block content %}{% endblock %}
   </div>
