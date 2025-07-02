@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method="POST" class="bg-white max-w-[90%] md:max-w-sm mx-auto mt-10 px-2 pb-5 rounded-2xl shadow-lg">
+  <div class="py-6">
+    <p class="text-center text-2xl font-bold text-green-800">SIGNUP</p>
+  </div>
+  
+  {% if error %}
+  <div class="my-3 mx-5 bg-red-200 border border-red-600 p-3 rounded-lg text-sm text-red-800">
+    <b>ERROR: </b>{{ error }}
+  </div>
+  {% endif %}
+  
+  <div class="px-5">
+    <label for="firstname" class="text-emerald-950">Firstname</label> <br>
+    <input placeholder="Enter your first name"class="bg-gray-100 p-2 w-full outline-green-700 rounded-lg border" id="firstname" name="firstname" type="text" required>
+  </div>
+  <div class="px-5 mt-3">
+    <label for="lastname" class="text-emerald-950">Lastname</label> <br>
+    <input placeholder="Enter your last name" class="bg-gray-100 p-2 w-full outline-green-700 rounded-lg border" id="lastname" name="lastname" type="text" required>
+  </div>
+  <div class="flex justify-between gap-4 px-5 mt-3">
+    <div class="flex-1">
+      <label for="grade" class="text-emerald-950">Grade</label> <br>
+      <select class="bg-gray-100 w-full p-2 border outline-green-700 rounded-lg" name="grade" id="grade">
+        <option value="11" selected>11</option>
+        <option value="12" disabled>12</option>
+      </select>
+    </div>
+    <div class="flex-1">
+      <label for="strand" class="text-emerald-950">Strand</label> <br>
+      <select class="bg-gray-100 w-full p-2 border outline-green-700 rounded-lg" name="strand" id="strand">
+        <option value="STEM" selected>STEM</option>
+        <option value="HUMSS" disabled>HUMSS</option>
+        <option value="ABM" disabled>ABM</option>
+        <option value="TVL" disabled>TVL</option>
+      </select>
+    </div>
+  </div>
+  
+  <div class="px-5 mt-4">
+    <label for="email" class="text-emerald-950">Email</label>
+    <input placeholder="example@gmail.com" class="bg-gray-100 p-2 w-full outline-green-700 rounded-lg border" type="email" id="email" name="email" required>
+  </div>
+  
+  <div class="px-5 mt-4">
+    <label for="password" class="text-emerald-950">Password</label>
+    <input class="bg-gray-100 p-2 w-full outline-green-700 rounded-lg border" type="password" id="password" name="password" required>
+  </div>
+  
+  <div class="px-5 mt-4">
+    <label for="password_confirm" class="text-emerald-950">Confirm Password</label>
+    <input class="bg-gray-100 p-2 w-full outline-green-700 rounded-lg border" type="password" id="password_confirm" name="password_confirm" required>
+  </div>
+  <div class="px-5 mt-5">
+    <button class="bg-emerald-700 hover:bg-emerald-800 border border-2 border-emerald-800 w-full p-3 text-md rounded-full text-green-100" type="submit">Create Account</button>
+    <p class="text-sm mt-2 text-gray-500">Already have an account? <a href="/auth/login" class="text-emerald-700 hover:underline">Login</a></p>
+  </div>
+</form>
+{% endblock %}
+{% block jss %}
+<script>
+$('#password_confirm').oninput = function(){
+  if ($('#password').value !== this.value){
+    if (!this.classList.contains('mali')){
+      this.classList.add('mali')
+    }
+  }else{
+    this.classList.remove('mali')
+  }
+}
+</script>
+<style type="text/tailwindcss">
+.mali{@apply outline-red-600 border-red-600}
+</style>
+{% endblock %}

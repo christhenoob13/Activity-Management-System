@@ -3,7 +3,8 @@ from flask import (
   request,
   render_template,
   session,
-  redirect, url_for
+  redirect, url_for,
+  current_app
 )
 auth = Blueprint('auth',__name__)
 
@@ -18,28 +19,75 @@ def logout():
 def login():
   if session.get('is_login'):
     return redirect(url_for('view.home'))
-  error = None
+  error = ''
   if request.method == 'POST':
-    username = request.form.get('username').strip()
+    akawnt = current_app.config['DATABASE']['accounts']
+    email = request.form.get('email').strip()
     password = request.form.get('password').strip()
-    if not username and not password:
+    if not email and not password:
       error = "Username and password cannot be blank"
-    elif not username or not password:
-      error = f"{'Username' if not username else 'Password'} cannot be blank"
-    # TODO: more logic here... e.g user not in database
-    # the error message must be "Invalid username"
-    if username == 'admin' and password == 'admin':
-      error = None
+    elif not email or not password:
+      error = f"{'Email' if not email else 'Password'} cannot be blank"
+    elif not akawnt.find_one(email=email):
+      error = 'Invalid username or password'
+    else:
+      user = akawnt.find_one(email=email)
+      session['user'] = {
+        "id": user['id'],
+        "firstname": user['firstname'],
+        "lastname": user['lastname'],
+        "email": user['email'],
+        "is": user['email']
+      }
+      error = ''
       session['is_login'] = True
       return redirect(url_for('view.home'))
-    error = "Invalid username or password"
-    # TODO: logic to add data in database or tbrow an error
   return render_template('login.html', error=error)
 
-"""
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
-  if request.method == 'GET':
-    return render_template('signup.html')
-  form = request.form
-"""
+  error = ''
+  if request.method == 'POST':
+    sNum = lambda s: any(char.isdigit() for char in s)
+    form = request.form
+    firstname = form.get('firstname').strip()
+    lastname = form.get('lastname').strip()
+    grade = form.get('grade').strip()
+    strand = form.get('strand').strip()
+    
+    email = form.get('email')
+    password = form.get('password')
+    password_confirm = form.get('password_confirm')
+    
+    if not firstname.isalnum() or sNum(firstname):
+      error = 'Invalid firstname value'
+    elif not lastname.isalnum() or sNum(lastname):
+      error = 'Invalid lastmame value'
+    elif int(grade) not in [11,12]:
+      error = 'Invalid grade level'
+    elif strand not in ['STEM', 'HUMSS', 'ABM', 'TVL']:
+      error = 'Invalid strand name'
+    elif password != password_confirm:
+      error = 'password do not match'
+    elif len(password) < 6 or len(password) > 16:
+      error = 'password must be 6-16 characters'
+    else:
+      db = current_app.config.get('DATABASE')
+      akawnt = db['accounts']
+      if akawnt.find_one(email=email):
+        error = 'Email already exist'
+      else:
+        error = ''
+        akawnt.insert(dict(
+          email = email,
+          password = password,
+          firstname = firstname.title(),
+          lastname = lastname.title(),
+          grade = int(grade),
+          strand = strand.upper(),
+          is_admin=False
+        ))
+        return redirect(url_for('auth.login'))
+  if session.get('is_login'):
+    return redirect(url_for('view.root'))
+  return render_template('signup.html', error=error, show_eruda=True)

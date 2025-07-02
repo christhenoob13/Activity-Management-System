@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="POST" class="bg-white max-w-[90%] md:max-w-sm mx-auto mt-5 px-2 pb-5 rounded-2xl shadow-lg">
+<form method="POST" class="bg-white max-w-[90%] md:max-w-sm mx-auto mt-10 px-2 pb-5 rounded-2xl shadow-lg">
   
   <div class="py-6">
     <p class="text-center text-2xl font-bold text-green-800">LOGIN</p>
@@ -9,11 +9,11 @@
   <div class="flex bg-gray-200 flex content-between mx-3">
     <div class="p-2 text-center bg-gray-200 text-green-800">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 1 0-2.636 6.364M16.5 12V8.25" />
       </svg>
     </div>
     <div class="flex-1">
-      <input type="text" placeholder="Username" class="w-full h-full outline-none bg-inherit" id="username" name="username">
+      <input type="text" placeholder="Email" class="w-full h-full outline-none bg-inherit pl-2" id="email" name="email">
     </div>
   </div>
   
@@ -24,7 +24,7 @@
       </svg>
     </div>
     <div class="flex-1">
-      <input type="password" placeholder="Password" class="w-full h-full outline-none bg-inherit" id="password" name="password">
+      <input type="password" placeholder="Password" class="w-full h-full outline-none bg-inherit pl-2" id="password" name="password">
     </div>
   </div>
   
@@ -37,7 +37,7 @@
   
   <div class="mx-3 mt-6">
     <button type="submit" class="bg-green-600 hover:bg-green-700 w-full p-2 rounded-full font-bold text-green-900 hover:text-green-600 shadow-md">Login</button>
-    <p class="text-sm mt-2 ml-1 text-gray-500">Don't have an account? <a href="#" class="text-emerald-700 hover:underline">Signup</a></p>
+    <p class="text-sm mt-2 ml-1 text-gray-500">Don't have an account? <a href="/auth/signup" class="text-emerald-700 hover:underline">Signup</a></p>
   </div>
   
 </form>

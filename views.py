@@ -14,7 +14,8 @@ def home():
   if not session.get('is_login'):
     return redirect(url_for('auth.login'))
   data = current_app.config.get("SUBJECTS", {})
-  return render_template('home.html', subjects=data, show_head=True)
+  user = session.get('user', {})
+  return render_template('home.html', subjects=data, user=user, show_head=True)
 
 #@view.route('/subject/id/<subject_id>')
 #def subject(subject_id):
