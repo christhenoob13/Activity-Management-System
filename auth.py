@@ -32,16 +32,19 @@ def login():
       error = 'Invalid username or password'
     else:
       user = akawnt.find_one(email=email)
-      session['user'] = {
-        "id": user['id'],
-        "firstname": user['firstname'],
-        "lastname": user['lastname'],
-        "email": user['email'],
-        "is": user['email']
-      }
-      error = ''
-      session['is_login'] = True
-      return redirect(url_for('view.home'))
+      if user['password'] != password:
+        error = 'Invalid username or password'
+      else:
+        session['user'] = {
+          "id": user['id'],
+          "firstname": user['firstname'],
+          "lastname": user['lastname'],
+          "email": user['email'],
+          "is": user['email']
+        }
+        error = ''
+        session['is_login'] = True
+        return redirect(url_for('view.home'))
   return render_template('login.html', error=error)
 
 @auth.route('/signup', methods=['GET', 'POST'])

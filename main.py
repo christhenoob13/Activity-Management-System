@@ -6,7 +6,7 @@ from auth import auth
 from views import view
 
 # database config
-database_url = os.getenv('DB_URL', 'sqlite:////db/database.db')
+database_url = os.getenv('DB_URL', 'sqlite:///db/database.db')
 db = dataset.connect(database_url)
 
 # app configuration
