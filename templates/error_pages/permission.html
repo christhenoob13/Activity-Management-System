@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="bg-white rounded-lg shadow-lg p-5 w-[300px]" style="position:absolute;transform: translate(-50%,-50%);top:50%;left:50%">
+  <h1 class="text-xl text-center text-red-600 font-bold flex items-center justify-center gap-3">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+    </svg>
+    Access Denied
+  </h1>
+  <p class="text-gray-400 text-sm p-3 text-center">
+    You dont have permission to access this page.
+  </p>
+  <center>
+    <a href="/"><button class="border border-red-700 text-red-700 hover:bg-red-600 hover:text-red-50 p-2 px-4 rounded-xl text-sm">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 inline mr-1">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+      </svg>
+      Back
+    </button></a>
+  </center>
+</div>
+{% endblock %}

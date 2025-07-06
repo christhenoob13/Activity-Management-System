@@ -15,6 +15,8 @@ def home():
     return redirect(url_for('auth.login'))
   data = current_app.config.get("SUBJECTS", {})
   user = session.get('user', {})
+  if user.get('is_admin'):
+    return redirect(url_for('admin.dashboard'))
   return render_template('home.html', subjects=data, user=user, show_head=True)
 
 #@view.route('/subject/id/<subject_id>')

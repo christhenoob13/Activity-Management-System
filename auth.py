@@ -40,7 +40,7 @@ def login():
           "firstname": user['firstname'],
           "lastname": user['lastname'],
           "email": user['email'],
-          "is": user['email']
+          "is_admin": user['is_admin']
         }
         error = ''
         session['is_login'] = True
@@ -62,10 +62,10 @@ def signup():
     password = form.get('password')
     password_confirm = form.get('password_confirm')
     
-    if not firstname.isalnum() or sNum(firstname):
+    if sNum(firstname):
       error = 'Invalid firstname value'
-    elif not lastname.isalnum() or sNum(lastname):
-      error = 'Invalid lastmame value'
+    elif sNum(lastname):
+      error = 'Invalid lastname value'
     elif int(grade) not in [11,12]:
       error = 'Invalid grade level'
     elif strand not in ['STEM', 'HUMSS', 'ABM', 'TVL']:
@@ -92,5 +92,5 @@ def signup():
         ))
         return redirect(url_for('auth.login'))
   if session.get('is_login'):
-    return redirect(url_for('view.root'))
+    return redirect(url_for('view.home'))
   return render_template('signup.html', error=error, show_eruda=True)

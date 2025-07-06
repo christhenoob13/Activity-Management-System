@@ -4,6 +4,7 @@ import os
 
 from auth import auth
 from views import view
+from admin import admin
 
 # database config
 database_url = os.getenv('DB_URL', 'sqlite:///db/database.db')
@@ -52,6 +53,7 @@ app.config['SUBJECTS'] = {
 }
 
 app.register_blueprint(auth, url_prefix='/auth')
+app.register_blueprint(admin, url_prefix='/admin')
 app.register_blueprint(view)
 
 if __name__ == '__main__':
