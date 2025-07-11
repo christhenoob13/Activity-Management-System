@@ -10,12 +10,9 @@ from flask import (
 
 admin = Blueprint('admin',__name__)
 
-"""
-TO-DO: the main dashboard for admin
-"""
 @admin.route('/')
-def dash(): # TODO: change the func name
-  return render_template('admin/dash.html') # TODO: change the html file
+def dash():
+  return redirect(url_for('admin.dashboard'))
 
 @admin.route('/dashboard')
 def dashboard():
@@ -27,11 +24,14 @@ def dashboard():
   data = [{
     "id": user['id'],
     "name": f"{user['lastname']}, {user['firstname']}",
-    "strand": user['strand']
+    "strand": user['strand'],
+    "grade": user['grade']
   } for user in users if not user['is_admin']]
   
   return render_template("admin/dashboard.html", data=data, show_eruda=True)
 
+
+"""ADMIN APIs"""
 
 @admin.route('/api/delete-account', methods=['GET'])
 def api_delete_account():
