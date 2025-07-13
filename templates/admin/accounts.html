@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="flex items-center pt-3 pl-3">
+  <a href="/admin/dashboard" class="text-sm py-2 px-4 border border-emerald-700 rounded-lg text-emerald-700 flex gap-1 hover:bg-emerald-700 hover:text-white">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+    </svg>
+    Dashboard
+  </a>
+</div>
+<!--
+<button class="bg-emerald-700 text-sm p-2 px-4 border rounded-md m-3">Hone</button>
+-->
+<div class="bg-white border mx-3 mt-2 rounded-lg">
+  <h2 class="text-emerald-800 text-md flex items-center gap-1 m-3">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+    </svg>
+    Accounts
+  </h2>
+  
+  <div class="m-3 mt-5 border border-blue-700 rounded-md flex overflow-x-hidden">
+    <div class="bg-blue-700 py-2 px-3 text-white">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+      </svg>
+    </div>
+    <input id="search" placeholder="Search student..." type="text" class="bg-green-100 w-full bg-white outline-none rounded-r-md px-2 text-gray-800">
+  </div>
+  
+  <div class="p-3 pt-1">
+    <div class="overflow-x-auto border rounded-md" style="scrollbar-color: #1e8c07 #31f20961">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <thead class="text-xs text-green-700 uppercase bg-green-300">
+          <tr>
+            <th scope="col" class="px-6 py-3">
+              ID
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Name
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Strand
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Grade
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in data %}
+          <tr id="student-{{ user.id }}" class="bg-green-100 border-b border-emerald-200 hover:bg-green-200 hatdog">
+            <td class="px-6 py-4">{{ user.id }}</td>
+            <td class="px-6 py-4">{{ user.name }}</td>
+            <td class="px-6 py-4">{{ user.strand }}</td>
+            <td class="px-6 py-4">{{ user.grade }}</td>
+            <td class="px-6 py-4">
+              <button class="bg-red-700 text-xs p-2 rounded-xl text-white hover:bg-red-800" onclick="deleteAccount('{{ user.id }}')">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                </svg>
+              </button>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

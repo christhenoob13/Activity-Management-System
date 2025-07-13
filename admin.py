@@ -20,6 +20,19 @@ def dashboard():
     return redirect(url_for('auth.login'))
   if not session.get('user',{}).get('is_admin'):
     return render_template('error_pages/permission.html')
+  accounts_count = len([i for i in current_app.config.get('DATABASE')['accounts']])
+  subjects_count = len(current_app.config.get('SUBJECTS',{}))
+  activity_count = 10 # TO-DO: the length of all activity
+  return render_template("admin/dashboard.html", show_eruda=True, accounts_count=accounts_count, subjects_count=subjects_count, activity_count=activity_count)
+
+
+"""ADMIN PAGES"""
+@admin.route('/accounts')
+def dash_accounts():
+  if not session.get('is_login'):
+    return redirect(url_for('auth.login'))
+  if not session.get('user',{}).get('is_admin'):
+    return render_template('error_pages/permission.html')
   users = current_app.config.get('DATABASE')['accounts']
   data = [{
     "id": user['id'],
@@ -27,12 +40,17 @@ def dashboard():
     "strand": user['strand'],
     "grade": user['grade']
   } for user in users if not user['is_admin']]
-  
-  return render_template("admin/dashboard.html", data=data, show_eruda=True)
+  return render_template('admin/accounts.html', data=data, show_eruda=True, select='accounts')
 
+@admin.route('/activity')
+def dash_activities():
+  if not session.get('is_login'):
+    return redirect(url_for('auth.login'))
+  if not session.get('user',{}).get('is_admin'):
+    return render_template('error_pages/permission.html')
+  return render_template('admin/activity.html', show_eruda=True, select='activity')
 
 """ADMIN APIs"""
-
 @admin.route('/api/delete-account', methods=['GET'])
 def api_delete_account():
   if not session.get('is_login'):
