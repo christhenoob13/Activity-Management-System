@@ -130,54 +130,6 @@
 }
 </style>
 <script>
-const data = "{{ data }}"
-const decoded = data.replace(/&#39;/g, "'");
-const jsonString = decoded.replace(/'/g, '"');
-const parsedData = JSON.parse(jsonString);
-
-$("#search").oninput = function(){
-  const ids = queryStudent(this.value).map(student => `student-${student.id}`)
-  displaySearch(ids)
-}
-
-function queryStudent(query){return parsedData.filter(student => student.name.toLocaleLowerCase().includes(query.toLocaleLowerCase()))}
-function displaySearch(ids){
-  document.querySelectorAll('.hatdog').forEach(td => {
-    if (ids.includes(td.id)){
-      td.style.display = ''
-    }else{
-      td.style.display = 'none'
-    }
-  })
-}
-
-function deleteAccount(student_id){
-  Swal.fire({
-    title: "Are you sure?",
-    text: "if you delete this account you won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!"
-  }).then((result) => {
-    if (result.isConfirmed) {
-      fetch(`/admin/api/delete-account?id=${student_id}`)
-        .then(r=>r.json())
-        .then(respo => {
-          const done = (respo.status === 'success') ? true:false;
-          Swal.fire({
-            title: done ? 'Delete':'Failed',
-            text: respo.message,
-            icon: done ? "success":'error',
-            showConfirmButton: false
-          });
-          if (done) setTimeout(()=>{location.reload()}, 1200);
-        })
-    }
-  });
-}
-
 function editMode(){
   const username = $('#username');
   const password = $('#password');
