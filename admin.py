@@ -52,5 +52,5 @@ def dash_activities():
     "task": 'Activity ' + str(i + 1),
     "date": 'June 13, 2008',
     "id": i + 1
-  } for i in range(2)]
+  } for i in range(5)]
   return render_template('admin/activity.html', show_eruda=True, data=data)

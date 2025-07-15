@@ -74,14 +74,15 @@ def adm_api_ACTIVITY_DATA():
     }), 2018
 #  db = current_app.config.get('DATABASE')['activity']
 #  data = sorted([dict(x) for x in db.find(subject_id=subject_id)], key=lambda y: y['category'])
+  import time;time.sleep(2)
   data = [
     {
-      "id": _,
-      "task": 'Activity 1',
+      "id": i+1,
+      "task": 'Activity ' + str(i+1),
       "description": 'eto ay description para sa mga pogi',
       "category": 'activity',
       "subject_id": 1,
       "date": 'July 17, 2025'
-    } for _ in range(22)
+    } for i in range(20)
   ]
   return jsonify({"status":'success',"data":data}), 200
