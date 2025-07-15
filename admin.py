@@ -48,13 +48,9 @@ def dash_activities():
     return redirect(url_for('auth.login'))
   if not session.get('user',{}).get('is_admin'):
     return render_template('error_pages/permission.html')
-  data = [
-    {
-      "task": 'Activity 1',
-      "description": 'eto ay description para sa mga pogi',
-      "category": 'activity',
-      "subject_id": 1,
-      "date": 'July 17, 2025'
-    } for _ in range(22)
-  ]
+  data = [{
+    "task": 'Activity ' + str(i + 1),
+    "date": 'June 13, 2008',
+    "id": i + 1
+  } for i in range(2)]
   return render_template('admin/activity.html', show_eruda=True, data=data)

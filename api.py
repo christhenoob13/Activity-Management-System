@@ -2,7 +2,8 @@ from flask import (
   Blueprint,
   session,
   request,
-  jsonify
+  jsonify,
+  current_app
 )
 
 api = Blueprint('api', __name__)
@@ -51,5 +52,36 @@ def adm_api_DELETE_ACCOUNT():
     return jsonify({"status":'error', 'message': str(e)})
 
 @adm_api.route('/data/activities', methods=['GET'])
-def adm_api_ALL_ACTIVITIES():
-  pass
+def adm_api_ACTIVITY_DATA():
+  if not session.get('is_login'):
+    return jsonify({
+      "status": 'error',
+      "message": 'Hindi ka pa naka login'
+    }), 2020
+  if not session.get('user',{}).get('is_admin'):
+    return jsonify({
+      "status": 'error',
+      "message": 'Wala kang permission'
+    }), 2021
+  
+  subject_id = int(request.args.get('subject_id', 1))
+  subjects = current_app.config.get('SUBJECTS')
+  
+  if subject_id not in subjects:
+    return jsonify({
+      "status": 'error',
+      "message": 'Invalid subject id'
+    }), 2018
+#  db = current_app.config.get('DATABASE')['activity']
+#  data = sorted([dict(x) for x in db.find(subject_id=subject_id)], key=lambda y: y['category'])
+  data = [
+    {
+      "id": _,
+      "task": 'Activity 1',
+      "description": 'eto ay description para sa mga pogi',
+      "category": 'activity',
+      "subject_id": 1,
+      "date": 'July 17, 2025'
+    } for _ in range(22)
+  ]
+  return jsonify({"status":'success',"data":data}), 200
