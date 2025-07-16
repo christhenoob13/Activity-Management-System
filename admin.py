@@ -20,9 +20,10 @@ def dashboard():
     return redirect(url_for('auth.login'))
   if not session.get('user',{}).get('is_admin'):
     return render_template('error_pages/permission.html')
-  accounts_count = len(current_app.config.get('DATABASE')['accounts']) - 1
   subjects_count = len(current_app.config.get('SUBJECTS',{}))
-  activity_count = 10 # TO-DO: the length of all activity
+  db = current_app.config.get("DATABASE")
+  accounts_count = len(db['accounts']) - 1
+  activity_count = len(db['activity'])
   return render_template("admin/dashboard.html", show_eruda=True, accounts_count=accounts_count, subjects_count=subjects_count, activity_count=activity_count)
 
 
@@ -48,9 +49,5 @@ def dash_activities():
     return redirect(url_for('auth.login'))
   if not session.get('user',{}).get('is_admin'):
     return render_template('error_pages/permission.html')
-  data = [{
-    "task": 'Activity ' + str(i + 1),
-    "date": 'June 13, 2008',
-    "id": i + 1
-  } for i in range(5)]
-  return render_template('admin/activity.html', show_eruda=True, data=data)
+  subjects = current_app.config.get('SUBJECTS')
+  return render_template('admin/activity.html', show_eruda=True, subjects=subjects)

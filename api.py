@@ -5,6 +5,7 @@ from flask import (
   jsonify,
   current_app
 )
+from time import sleep as delay
 
 api = Blueprint('api', __name__)
 adm_api = Blueprint('adm_api', __name__)
@@ -72,17 +73,46 @@ def adm_api_ACTIVITY_DATA():
       "status": 'error',
       "message": 'Invalid subject id'
     }), 2018
-#  db = current_app.config.get('DATABASE')['activity']
-#  data = sorted([dict(x) for x in db.find(subject_id=subject_id)], key=lambda y: y['category'])
-  import time;time.sleep(2)
-  data = [
-    {
-      "id": i+1,
-      "task": 'Activity ' + str(i+1),
-      "description": 'eto ay description para sa mga pogi',
-      "category": 'activity',
-      "subject_id": 1,
-      "date": 'July 17, 2025'
-    } for i in range(20)
-  ]
+  db = current_app.config.get('DATABASE')['activity']
+  data = sorted([dict(x) for x in db.find(subject_id=subject_id)], key=lambda y: y['category'])
   return jsonify({"status":'success',"data":data}), 200
+
+@adm_api.route('/delete-activity', methods=['GET'])
+def adm_api_DELETE_ACTIVITY():
+  delay(1)
+  if not session.get('is_login'):
+    return jsonify({
+      "status": 'error',
+      "message": 'Hindi ka pa naka login'
+    }), 2020
+  if not session.get('user',{}).get('is_admin'):
+    return jsonify({
+      "status": 'error',
+      "message": 'Wala kang permission'
+    }), 2021
+  aid = request.args.get("id")
+  if not aid:
+    return jsonify({"status":'error',"message":'Missing id parameters'}), 2023
+  activ = current_app.config.get('DATABASE')['activity']
+  try:
+    if activ.find_one(id=int(aid)):
+      activ.delete(id=int(aid))
+      return jsonify({
+        "status": 'success',
+        "message": "Activity has been deleted"
+      }),2005
+    else:
+      return jsonify({
+        "status": 'error',
+        "message": f'Activities with \'{aid}\' id not found'
+      }),200
+  except ValueError:
+    return jsonify({"status":'error',"message":'Invalid id parameter value'}),2002
+  except Exception as e:
+    print("ERROR: ", e)
+    return jsonify({"status":'error', 'message': str(e)})
+
+@adm_api.route('/create-activity', methods=["POST"])
+def adm_api_CREATE_ACTIVITY():
+  data = request.get_json()
+  # TODO: gagawin
