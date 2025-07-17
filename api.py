@@ -7,17 +7,11 @@ from flask import (
 )
 from time import sleep as delay
 
-api = Blueprint('api', __name__)
-adm_api = Blueprint('adm_api', __name__)
-
-"""
-  Normal APIs
-"""
+api = Blueprint('api', __name__)         # /api
+adm_api = Blueprint('adm_api', __name__) # /admin/api
 
 
-"""
-  APIs FOR ADMINISTRATOR
-"""
+
 @adm_api.route('/delete-account', methods=['GET'])
 def adm_api_DELETE_ACCOUNT():
   if not session.get('is_login'):
@@ -52,7 +46,7 @@ def adm_api_DELETE_ACCOUNT():
     print("ERROR: ", e)
     return jsonify({"status":'error', 'message': str(e)})
 
-@adm_api.route('/data/activities', methods=['GET'])
+@api.route('/data/activities', methods=['GET'])
 def adm_api_ACTIVITY_DATA():
   if not session.get('is_login'):
     return jsonify({
@@ -114,5 +108,13 @@ def adm_api_DELETE_ACTIVITY():
 
 @adm_api.route('/create-activity', methods=["POST"])
 def adm_api_CREATE_ACTIVITY():
-  data = request.get_json()
-  # TODO: gagawin
+  try:
+    data = request.get_json()
+    db = current_app.config.get('DATABASE')['activity']
+    if db.find_one(title=data.get("title"), subject_id=data.get('subject_id')):
+      return jsonify({"error_message": "Title already exist, please try another title"})
+    db.insert(data)
+    return jsonify({'status': 'success'})
+  except Exception as e:
+    print("\033[41m[CREATE_ACTIVITY] ", e)
+    return jsonify({"error_message":str(e)})
