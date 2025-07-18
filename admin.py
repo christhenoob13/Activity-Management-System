@@ -22,7 +22,7 @@ def dashboard():
     return render_template('error_pages/permission.html')
   subjects_count = len(current_app.config.get('SUBJECTS',{}))
   db = current_app.config.get("DATABASE")
-  accounts_count = len(db['accounts']) - 1
+  accounts_count = len(db['accounts'])
   activity_count = len(db['activity'])
   return render_template("admin/dashboard.html", show_eruda=True, accounts_count=accounts_count, subjects_count=subjects_count, activity_count=activity_count)
 

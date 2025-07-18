@@ -24,6 +24,13 @@ def login():
     akawnt = current_app.config['DATABASE']['accounts']
     email = request.form.get('email').strip()
     password = request.form.get('password').strip()
+    
+    admin = current_app.config.get("ADMIN")
+    if email.lower() == admin['email'].lower() and password == admin['password']:
+      session['user'] = dict(is_admin=True)
+      session['is_login'] = True
+      return redirect(url_for('view.home'))
+    
     if not email and not password:
       error = "Username and password cannot be blank"
     elif not email or not password:
@@ -40,7 +47,7 @@ def login():
           "firstname": user['firstname'],
           "lastname": user['lastname'],
           "email": user['email'],
-          "is_admin": user['is_admin']
+          #"is_admin": user['is_admin']
         }
         error = ''
         session['is_login'] = True

@@ -15,6 +15,10 @@ db = dataset.connect(database_url)
 app = Flask(__name__)
 app.secret_key = "&U-7Bjueh&:£77-ji[ SIKRETONG MALUPET ]z8eh3iU*y682I"
 app.config['DATABASE'] = db
+app.config['ADMIN'] = {
+  "email": 'admin',
+  "password": 'admin123'
+}
 app.config['SUBJECTS'] = {
   1: {
     "id": 1,

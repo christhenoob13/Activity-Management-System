@@ -10,7 +10,39 @@ from time import sleep as delay
 api = Blueprint('api', __name__)         # /api
 adm_api = Blueprint('adm_api', __name__) # /admin/api
 
-
+@api.route('/data/subject-activity')
+def api_SUBJECT_ACTIVITY_TRACK():
+  if not session.get('is_login'):
+    return jsonify({
+      "status": 'error',
+      "message": 'Hindi ka pa naka login'
+    }), 2020
+  user = session.get('user', {})
+  if user.get('is_admin'):
+    return jsonify({
+      "status": 'error',
+      "message": 'Unexpected error'
+    }), 2003
+  
+  db = current_app.config.get('DATABASE')
+  
+  aid = int(request.args.get('subid')) # Subject ID
+  sid = int(user.get('id')) # Student ID
+  
+  activities = [dict(activity) for activity in db['activity'].find(subject_id=f"{aid}")]
+  completo = [dict(completed) for completed in db['completedStudentActivity'].find(subject_id=aid, student_id=sid)]
+  _completedID = [x['activity_id'] for x in completo]
+  
+  SUBJECT = current_app.config.get('SUBJECTS').get(aid)
+  COMPLETE_ACTIVITIES, INCOMPLETE_ACTIVITIES = [], []
+  for activity in activities:
+    (COMPLETE_ACTIVITIES if activity['id'] in _completedID else INCOMPLETE_ACTIVITIES).append(activity)
+  
+  return jsonify({
+    "subject": SUBJECT,
+    "complete": COMPLETE_ACTIVITIES,
+    "incomplete": INCOMPLETE_ACTIVITIES
+  })
 
 @adm_api.route('/delete-account', methods=['GET'])
 def adm_api_DELETE_ACCOUNT():
@@ -59,16 +91,16 @@ def adm_api_ACTIVITY_DATA():
       "message": 'Wala kang permission'
     }), 2021
   
-  subject_id = int(request.args.get('subject_id', 1))
+  subject_id = request.args.get('subject_id', 1)
   subjects = current_app.config.get('SUBJECTS')
   
-  if subject_id not in subjects:
+  if int(subject_id) not in subjects:
     return jsonify({
       "status": 'error',
       "message": 'Invalid subject id'
     }), 2018
   db = current_app.config.get('DATABASE')['activity']
-  data = sorted([dict(x) for x in db.find(subject_id=subject_id)], key=lambda y: y['category'])
+  data = sorted([dict(x) for x in db.find(subject_id=str(subject_id))], key=lambda y: y['category'])
   return jsonify({"status":'success',"data":data}), 200
 
 @adm_api.route('/delete-activity', methods=['GET'])
