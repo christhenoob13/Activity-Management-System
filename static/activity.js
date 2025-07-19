@@ -154,7 +154,9 @@ const deleteActivity = async (id) => {
   </svg>`;
   try{
     const res = await fetch(`/admin/api/delete-activity?id=${id}`);
+    console.log(res)
     const data = await res.json();
+    console.log(data)
     if (data.status === 'success'){
       $(`#activity-${id}`).remove()//classList.add('hidden')
       init($("#subject").value)

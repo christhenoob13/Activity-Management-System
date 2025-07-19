@@ -17,7 +17,7 @@ def home():
   user = session.get('user', {})
   if user.get('is_admin'):
     return redirect(url_for('admin.dashboard'))
-  return render_template('student/dashboard.html', subjects=data)
+  return render_template('student/dashboard.html', subjects=data, show_head=True)
 
 @view.route('/page/subject')
 def subject():
@@ -27,4 +27,4 @@ def subject():
   subjects = current_app.config.get('SUBJECTS', {})
   if subject_id not in subjects:
     return redirect(url_for('view.home'))
-  return render_template("student/checkSubject.html", subject=dict(id=subject_id,name=subjects[subject_id]['subject']))
+  return render_template("student/checkSubject.html", subject=dict(id=subject_id,name=subjects[subject_id]['subject']), show_head=True)
