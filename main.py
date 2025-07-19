@@ -9,7 +9,7 @@ from api import adm_api, api
 
 # database config
 
-database_url = os.getenv('DB_URL')#, 'sqlite:///db/database.db')
+database_url = os.getenv('DB_URL', 'sqlite:///db/database.db')
 db = dataset.connect(database_url)
 
 # app configuration
@@ -70,4 +70,9 @@ app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(view)
 
 if __name__ == '__main__':
-  app.run(debug=False, port=8080)
+  PORT = os.getenv('PORT', 5000)
+  app.run(
+    host='0.0.0.0',
+    port=PORT,
+    debug=False,
+  )
