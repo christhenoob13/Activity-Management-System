@@ -126,12 +126,12 @@ def adm_api_DELETE_ACTIVITY():
       return jsonify({
         "status": 'success',
         "message": "Activity has been deleted"
-      }),2005
+      }),200
     else:
       return jsonify({
         "status": 'error',
         "message": f'Activities with \'{aid}\' id not found'
-      }),200
+      }),2005
   except ValueError:
     return jsonify({"status":'error',"message":'Invalid id parameter value'}),2002
   except Exception as e:
