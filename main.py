@@ -10,7 +10,7 @@ from api import adm_api, api
 # database config
 
 database_url = os.getenv('DB_URL')#, 'sqlite:///db/database.db')
-db = dataset.connect("postgresql://avnadmin:AVNS_LbYSgfUvG6TXb1fX9LK@activity-tracking-greegmon13-cb49.c.aivencloud.com:19884/pr2?sslmode=require")
+db = dataset.connect(database_url)
 
 # app configuration
 app = Flask(__name__)
