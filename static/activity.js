@@ -154,9 +154,11 @@ const deleteActivity = async (id) => {
   </svg>`;
   try{
     const res = await fetch(`/admin/api/delete-activity?id=${id}`);
-    console.log(res)
+    if (!res.ok){
+      $(`#activity-${id}`).remove()
+      return init($("#subject").value)
+    }
     const data = await res.json();
-    console.log(data)
     if (data.status === 'success'){
       $(`#activity-${id}`).remove()//classList.add('hidden')
       init($("#subject").value)
@@ -164,7 +166,7 @@ const deleteActivity = async (id) => {
       alert(data.message)
     }
   }catch(err){
-    console.log("ERROR (deleteActivity): ", err.message)
+    console.log("ERROR (deleteActivity): ", err)
   }finally{
     btn.removeAttribute('disabled')
     btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
