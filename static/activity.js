@@ -73,8 +73,8 @@ const openModal = () => {
           <input required id="title" type="text" placeholder="e.g. Activity 1" class="p-3 bg-white border text-sm rounded-xl w-full">
           
           <br><br>
-          <label for="description" class="text-sm text-gray-500">Description <i>(optional)</i></label><br>
-          <textarea id="description" rows="10" maxlength="500" class="border rounded-lg p-2 w-full"></textarea>
+          <label for="description" class="text-sm text-gray-500">Instruction <i>(required)</i></label><br>
+          <textarea required id="description" rows="10" maxlength="500" class="border rounded-lg p-2 w-full"></textarea>
         </div>
         
         <div class="flex items-center p-4 md:p-5 border-t border-gray-300 rounded-b">

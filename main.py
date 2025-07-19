@@ -22,38 +22,43 @@ app.config['ADMIN'] = {
 app.config['SUBJECTS'] = {
   1: {
     "id": 1,
-    "subject": "Philosophy",
-    "teacher": "Mary Grace Remulla"
+    "subject": "General Biology",
+    "teacher": "JRSoriano"
   },
   2: {
     "id": 2,
-    "subject": "Entrepreneurship",
-    "teacher": "Cristina Mendoza"
+    "subject": "Earth Science",
+    "teacher": "RBNoro"
   },
   3: {
     "id": 3,
-    "subject": "Contemporary Philippine Arts",
-    "teacher": "Renz Cruz"
+    "subject": "Physical Education",
+    "teacher": "EVPalceso"
   },
   4: {
     "id": 4,
-    "subject": "Understanding Culture, Society and Politics",
-    "teacher": "Nelson U. Rubio"
+    "subject": "Pre-Calculus",
+    "teacher": "ARRecto"
   },
   5: {
     "id": 5,
-    "subject": "21st Century",
-    "teacher": "Catherine Bergado"
+    "subject": "General Mathematics",
+    "teacher": "ARRecto"
   },
   6: {
     "id": 6,
-    "subject": "Physical Education ans Health",
-    "teacher": "Edison V. Palceso"
+    "subject": "English for Academic and Pofessional Purposes",
+    "teacher": "MBFlores"
   },
   7: {
     "id": 7,
-    "subject": "Practical Research 2",
-    "teacher": "Jaime R. Soriano"
+    "subject": "Oral Communication",
+    "teacher": "HNMendoza"
+  },
+  7: {
+    "id": 7,
+    "subject": "Komunikasyon at Pananaliksik sa Wikang Filipino at Kulturang Pilipino",
+    "teacher": "MDAndaya"
   }
 }
 
@@ -64,4 +69,4 @@ app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(view)
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run(debug=False)

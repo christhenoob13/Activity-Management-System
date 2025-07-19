@@ -22,9 +22,9 @@ def dashboard():
     return render_template('error_pages/permission.html')
   subjects_count = len(current_app.config.get('SUBJECTS',{}))
   db = current_app.config.get("DATABASE")
-  accounts_count = len(db['accounts'])
-  activity_count = len(db['activity'])
-  return render_template("admin/dashboard.html", show_eruda=True, accounts_count=accounts_count, subjects_count=subjects_count, activity_count=activity_count)
+  accounts_count = len([i for i in db['accounts']])
+  activity_count = len([i for i in db['activity']])
+  return render_template("admin/dashboard.html", accounts_count=accounts_count, subjects_count=subjects_count, activity_count=activity_count)
 
 
 """ADMIN PAGES"""
@@ -41,7 +41,7 @@ def dash_accounts():
     "strand": user['strand'],
     "grade": user['grade']
   } for user in users if not user['is_admin']]
-  return render_template('admin/accounts.html', data=data, show_eruda=True)
+  return render_template('admin/accounts.html', data=data)
 
 @admin.route('/activity')
 def dash_activities():
@@ -50,4 +50,4 @@ def dash_activities():
   if not session.get('user',{}).get('is_admin'):
     return render_template('error_pages/permission.html')
   subjects = current_app.config.get('SUBJECTS')
-  return render_template('admin/activity.html', show_eruda=True, subjects=subjects)
+  return render_template('admin/activity.html', subjects=subjects)
