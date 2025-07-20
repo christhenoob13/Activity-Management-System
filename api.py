@@ -105,7 +105,6 @@ def adm_api_ACTIVITY_DATA():
 
 @adm_api.route('/delete-activity', methods=['GET'])
 def adm_api_DELETE_ACTIVITY():
-  delay(1)
   if not session.get('is_login'):
     return jsonify({
       "status": 'error',
@@ -150,3 +149,8 @@ def adm_api_CREATE_ACTIVITY():
   except Exception as e:
     print("\033[41m[CREATE_ACTIVITY] ", e)
     return jsonify({"error_message":str(e)})
+
+@adm_api.route("/accounts")
+def adm_api_ALL_ACCOUNTS():
+  db = current_app.config.get('DATABASE')
+  return jsonify([dict(account) for account in db['accounts']])

@@ -34,14 +34,7 @@ def dash_accounts():
     return redirect(url_for('auth.login'))
   if not session.get('user',{}).get('is_admin'):
     return render_template('error_pages/permission.html')
-  users = current_app.config.get('DATABASE')['accounts']
-  data = [{
-    "id": user['id'],
-    "name": f"{user['lastname']}, {user['firstname']}",
-    "strand": user['strand'],
-    "grade": user['grade']
-  } for user in users if not user['is_admin']]
-  return render_template('admin/accounts.html', data=data)
+  return render_template('admin/accounts.html')
 
 @admin.route('/activity')
 def dash_activities():
@@ -51,3 +44,14 @@ def dash_activities():
     return render_template('error_pages/permission.html')
   subjects = current_app.config.get('SUBJECTS')
   return render_template('admin/activity.html', subjects=subjects)
+
+@admin.route('/student-activity')
+def dash_student_activity():
+  if not session.get('is_login'):
+    return redirect(url_for('auth.login'))
+  if not session.get('user',{}).get('is_admin'):
+    return render_template('error_pages/permission.html')
+  student_id = request.args.get('id')
+  xyz = current_app.config.get('DATABASE')['accounts'].find_one(id=student_id)
+  student_name = xyz['lastname'] + ', ' + xyz['firstname']
+  return render_template('admin/student_activity.html', stid=student_id, stname=student_name)
