@@ -54,4 +54,5 @@ def dash_student_activity():
   student_id = request.args.get('id')
   xyz = current_app.config.get('DATABASE')['accounts'].find_one(id=student_id)
   student_name = xyz['lastname'] + ', ' + xyz['firstname']
-  return render_template('admin/student_activity.html', stid=student_id, stname=student_name)
+  subjects = current_app.config.get("SUBJECTS")
+  return render_template('admin/student_activity.html', subjects=subjects, stid=student_id, stname=student_name)

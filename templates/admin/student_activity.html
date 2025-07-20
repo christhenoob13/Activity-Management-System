@@ -12,6 +12,7 @@
 </div>
 
 <div class="bg-white border p-4 m-4 rounded-lg">
+  <input type="hidden" id="sid" value="{{ stid }}">
   <h2 class="text-emerald-800 text-md flex font-bold items-center gap-1 mb-2">
     {{ stname }}
   </h2>
@@ -23,34 +24,79 @@
         </svg>
       </div>
       <select id="filterSubjects" class="w-full outline-none bg-white text-gray-600 text-sm p-2">
-        <option value="Activity">Activity</option>
-        <option value="Assignment">Assignment</option>
-        <option value="PETA">Performance Task</option>
+        {% for sub in subjects %}
+          <option value="{{ sub }}">{{ subjects[sub].subject }}</option>
+        {% endfor %}
       </select>
     </div>
     <div class="flex justify-end md:max-w-[200px] mt-2">
-      <button class="text-xs bg-blue-600 text-white rounded-full p-2 px-3 hover:bg-blue-700 disabled:bg-gray-200">
+      <button disabled id="save-changes" class="text-xs bg-blue-600 text-white rounded-full p-2 px-3 hover:bg-blue-700 disabled:bg-gray-200">
         Save Changes
       </button>
     </div>
   </div>
   <!-- DATOS -->
-  <div class="bg-gray-100 p-2 rounded-lg border">
-    <div>
-      <h3 class="text-lg text-emerald-700 m-2 mb-1">Activities</h3>
-      <ul class="grid md:grid-cols-2">
-        <li class="bg-white p-3 border overflow-auto flex">
-          <div class="pl-1 pr-3 flex items-center justify-center">
-            <input type="checkbox" class="accent-green-500">
-          </div>
-          <div>
-            <p>Acyaha</p>
-            <p class="text-xs">jsjsj</p>
-          </div>
-        </li>
-      </ul>
+  <div>
+    <div id="loading" class="bg-gray-300 animate-pulse grid md:grid-cols-2 gap-3 p-2">
+      <div>
+        <div class="h-6 bg-gray-200 mb-2 w-20"></div>
+        <div class="h-12 bg-gray-200 mb-1"></div>
+        <div class="h-12 bg-gray-200 mb-1"></div>
+      </div>
+      <div>
+        <div class="h-6 bg-gray-200 mb-2 w-20"></div>
+        <div class="h-12 bg-gray-200 mb-1"></div>
+        <div class="h-12 bg-gray-200 mb-1"></div>
+      </div>
+    </div>
+    <div id="data-items" class="hidden bg-gray-100 p-2 rounded-lg border grid md:grid-cols-2 gap-2">
+      <div>
+        <h3 class="text-md text-emerald-700 m-2 mb-1">Activities</h3>
+        <ul id="activity-list">
+          <!--<li class="bg-white p-3 border overflow-auto flex">
+            <div class="pl-1 pr-3 flex items-center justify-center">
+              <input type="checkbox" class="accent-green-500">
+            </div>
+            <div>
+              <p>Acyaha</p>
+              <p class="text-xs">jsjsj</p>
+            </div>
+          </li>-->
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-md text-emerald-700 m-2 mb-1">Assignments</h3>
+        <ul id="assignment-list">
+          <!--<li class="bg-white p-3 border overflow-auto flex">
+            <div class="pl-1 pr-3 flex items-center justify-center">
+              <input type="checkbox" class="accent-green-500">
+            </div>
+            <div>
+              <p>Assignment 1</p>
+              <p class="text-xs">jsjsj</p>
+            </div>
+          </li>-->
+        </ul>
+      </div>
+      <div class="md:col-span-2">
+        <h3 class="text-md text-emerald-700 m-2 mb-1">Performance Task</h3>
+        <ul id="PETA-list" class="md:grid md:grid-cols-2">
+          <!--<li class="bg-white p-3 border overflow-auto flex">
+            <div class="pl-1 pr-3 flex items-center justify-center">
+              <input type="checkbox" class="accent-green-500">
+            </div>
+            <div>
+              <p>Peta 1</p>
+              <p class="text-xs">jsjsj</p>
+            </div>
+        </li>-->
+        </ul>
+      </div>
     </div>
   </div>
   
 </div>
+{% endblock %}
+{% block jss %}
+<script src="{{ url_for('static', filename='studentActivity.js') }}"></script>
 {% endblock %}

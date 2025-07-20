@@ -18,7 +18,7 @@ def api_SUBJECT_ACTIVITY_TRACK():
       "message": 'Hindi ka pa naka login'
     }), 2020
   user = session.get('user', {})
-  if user.get('is_admin'):
+  if user.get('is_admin') and request.args.get('allow')!='yes':
     return jsonify({
       "status": 'error',
       "message": 'Unexpected error'
@@ -27,8 +27,11 @@ def api_SUBJECT_ACTIVITY_TRACK():
   db = current_app.config.get('DATABASE')
   
   aid = int(request.args.get('subid')) # Subject ID
-  sid = int(user.get('id')) # Student ID
-  
+  if not user.get('is_admin'):
+    sid = int(user.get('id')) # Student ID
+  else:
+    sid = int(request.args.get('id'))
+  print(sid)
   activities = [dict(activity) for activity in db['activity'].find(subject_id=f"{aid}")]
   completo = [dict(completed) for completed in db['completedStudentActivity'].find(subject_id=aid, student_id=sid)]
   _completedID = [x['activity_id'] for x in completo]
