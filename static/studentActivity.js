@@ -165,5 +165,5 @@ async function init(){
   offloading()
 }
 
-
+$("#filterSubjects").onchange = async () => await init();
 window.onload = async () => await init();
