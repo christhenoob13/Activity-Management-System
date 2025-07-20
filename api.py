@@ -34,7 +34,10 @@ def api_SUBJECT_ACTIVITY_TRACK():
   print(sid)
   activities = [dict(activity) for activity in db['activity'].find(subject_id=f"{aid}")]
   completo = [dict(completed) for completed in db['completedStudentActivity'].find(subject_id=aid, student_id=sid)]
-  _completedID = [x['activity_id'] for x in completo]
+  print("\033[32m")
+  print(completo)
+  print("\033[0m")
+  _completedID = [int(x['activity_id']) for x in completo]
   
   SUBJECT = current_app.config.get('SUBJECTS').get(aid)
   COMPLETE_ACTIVITIES, INCOMPLETE_ACTIVITIES = [], []
@@ -46,6 +49,34 @@ def api_SUBJECT_ACTIVITY_TRACK():
     "complete": COMPLETE_ACTIVITIES,
     "incomplete": INCOMPLETE_ACTIVITIES
   })
+
+@adm_api.route('/set/subject-activity', methods=['POST'])
+def adm_api_SET_SUBJECT_ACTIVITY():
+  data = request.get_json()
+  DATA = data.get('data')
+  try:
+    student_id = int(data.get('student_id'))
+    subject_id = int(data.get('subject_id'))
+  except ValueError:
+    return jsonify({
+      "status": 'error',
+      "message": 'Invalid value of student/subject id'
+    }), 403
+  try:
+    fg = [dict(
+      activity_id = i,
+      student_id = student_id,
+      subject_id = subject_id
+    ) for i in DATA]
+    print(fg)
+    db = current_app.config.get('DATABASE')['completedStudentActivity']
+    db.upsert_many(fg, ['activity_id'])
+    return jsonify({
+      "status": 'success'
+    })
+  except Exception as e:
+    print("[ERROR](api:50): ", e)
+    return jsonify({"status":'error', "message":f"{e}"})
 
 @adm_api.route('/delete-account', methods=['GET'])
 def adm_api_DELETE_ACCOUNT():
@@ -79,7 +110,7 @@ def adm_api_DELETE_ACCOUNT():
     return jsonify({"status":'error',"message":'Invalid id parameter value'}),2002
   except Exception as e:
     print("ERROR: ", e)
-    return jsonify({"status":'error', 'message': str(e)})
+    return jsonify({"status":'error', 'message': f"{e}"})
 
 @api.route('/data/activities', methods=['GET'])
 def adm_api_ACTIVITY_DATA():
@@ -138,7 +169,7 @@ def adm_api_DELETE_ACTIVITY():
     return jsonify({"status":'error',"message":'Invalid id parameter value'}),2002
   except Exception as e:
     print("ERROR: ", e)
-    return jsonify({"status":'error', 'message': str(e)})
+    return jsonify({"status":'error', 'message': f"{e}"})
 
 @adm_api.route('/create-activity', methods=["POST"])
 def adm_api_CREATE_ACTIVITY():
@@ -151,7 +182,7 @@ def adm_api_CREATE_ACTIVITY():
     return jsonify({'status': 'success'})
   except Exception as e:
     print("\033[41m[CREATE_ACTIVITY] ", e)
-    return jsonify({"error_message":str(e)})
+    return jsonify({"error_message": f"{e}"})
 
 @adm_api.route("/accounts")
 def adm_api_ALL_ACCOUNTS():

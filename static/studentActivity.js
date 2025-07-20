@@ -1,4 +1,4 @@
-const yes = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-green-700"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`;
+const yes = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-green-700"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" /></svg>`;
 const no = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" /></svg>`;
 
 async function getActivities(student_id, subject_id){
@@ -53,10 +53,10 @@ const display = (data) => {
     $(ulID).innerHTML = "";
     data[category].forEach(item => {
       $(ulID).innerHTML += `
-        <li id="ariesTae-${item.id}" onclick="clicked(${item.id})" class="bg-white p-3 border overflow-auto flex">
+        <li id="ariesTae-${item.id}" onclick="clicked(${item.id})" class="bg-white p-3 overflow-auto flex border">
           <div class="pl-1 pr-3 flex items-center justify-center" id="icon-data">
             <span id="icon-${item.id}">${item.status==='complete'?yes:no}</span>
-            <input id="checker-${item.id}" ${item.status==='complete'?'checked':''} type="checkbox" class="checker hidden">
+            <input data-category="${category}" id="checker-${item.id}" ${item.status==='complete'?'checked':''} type="checkbox" class="checker hidden">
           </div>
           <div>
             <p class="text-gray-800">${item.title}</p>
@@ -71,7 +71,6 @@ const display = (data) => {
 const clicked = (id) => {
   const check = $("#checker-" + id);
   check.click()
-  loadCheckerize()
 }
 
 const offloading = () => {
@@ -94,23 +93,28 @@ const displayEmpty = ({ Activity, Assignment, PETA}) => {
   if (PETA.length < 1) $("#PETA-list").innerHTML = empty;
 }
 
-let changed = [];
+// TODO: MAY ERROR :(
+//       Kapag pinipindot ang activity na may check na,
+//       dalawang beses bago mag change status
+let changed = {};
 const loadCheckerize = () => {
   const inputs = document.querySelectorAll('.checker');// input[type=checkbox]
   inputs.forEach(input => {
     input.onchange = function(){
-      const id = input.id.split('-')[1];
-      if (changed.includes(id)){
-        const index = changed.indexOf(id);
-        if(index!==-1){
-          changed.splice(index, 1);
-          $("#icon-"+id).innerHTML = no
-        }
+      console.log(changed)
+      const id = parseInt(input.id.split('-')[1]);
+      if(changed?.[id]){
+        delete changed[id]
+        $("#icon-"+id).innerHTML = no
       }else{
+        const $category = input.getAttribute('data-category')
+        changed[id] = {
+          id: id,
+          setto: $category==='complete'?'incomplete':$category
+        }
         $("#icon-"+id).innerHTML = yes
-        if(!changed.includes(id))changed.push(id)
       }
-      if (changed.length > 0){
+      if (Object.keys(changed).length > 0){
         $("#save-changes").removeAttribute('disabled');
       }else{
         $("#save-changes").setAttribute('disabled', '');
@@ -119,13 +123,33 @@ const loadCheckerize = () => {
   })
 }
 
+async function saveChanges(){
+  try{
+    const res = await fetch(`/admin/api/set/subject-activity`, {
+      method: 'POST',
+      headers: {"Content-Type": 'application/json'},
+      body: JSON.stringify({
+        student_id: $("#sid").value,
+        subject_id: $("#filterSubjects").value,
+        data: changed
+      })
+    })
+    const data = await res.json()
+    console.log(data)
+  }catch(err){
+    console.error("[120]: ", err)
+  }finally{
+    //location.reload()
+  }
+}
+
 async function init(){
   const data = await getActivities($("#sid").value, $("#filterSubjects").value);
   // TODO: if error return or None
   const parseData = parseByCategory(data);
   display(parseData);
   displayEmpty(parseData)
-  //loadCheckerize()
+  loadCheckerize(parseData)
   offloading()
 }
 
