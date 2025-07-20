@@ -1,4 +1,4 @@
-let COMPLETE, INCOMPLETE = [];
+let COMPLETE = [], INCOMPLETE = [];
 
 async function init(){
   const subject_id = $("#subject_id").value;
@@ -50,11 +50,11 @@ const LIST = (activity, ul, status) => {
     Assignment: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" /></svg>`,
     PETA: `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5"><path stroke-linecap="round" stroke-linejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" /></svg>`
   }
-
+  
   const li = document.createElement('li');
   li.classList.add('listahan');
   li.setAttribute('onclick', `openModal(${activity.id}, ${status.toUpperCase()})`)
-
+  
   const iconWrapper = document.createElement('div');
   iconWrapper.classList.add('p-2');
 
@@ -82,7 +82,7 @@ const LIST = (activity, ul, status) => {
   ul.appendChild(li);
 }
 
-function openModal(id, status){
+function openModal(id, $base){
   $("#MODAL").innerHTML = `
   <div id="modalOverlay" class="hidden fixed inset-0 z-50 overflow-y-auto overflow-x-hidden flex justify-center items-center bg-black bg-opacity-50">
     <div id="modalBox" class="relative p-4 w-full max-w-2xl max-h-full transform -translate-y-10 opacity-0 transition-all duration-300">
@@ -117,8 +117,8 @@ function openModal(id, status){
   `;
   const modalOverlay = $('#modalOverlay');
   const modalBox = $('#modalBox');
-  const $base = status === 'complete' ? COMPLETE:INCOMPLETE;
   const data = $base.find(item => item.id===id);
+  
   $("#modalCategory").textContent = data.category === "PETA" ? "Performance Task":data.category;
   $("#modalTitle").textContent = data.title;
   $("#modalDate").textContent = data.date;

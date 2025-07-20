@@ -8,7 +8,6 @@ from admin import admin
 from api import adm_api, api
 
 # database config
-
 database_url = os.getenv('DB_URL', 'sqlite:///db/database.db')
 db = dataset.connect(database_url)
 
@@ -74,5 +73,5 @@ if __name__ == '__main__':
   app.run(
     host='0.0.0.0',
     port=PORT,
-    debug=True,
+    debug=False,
   )

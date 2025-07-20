@@ -28,15 +28,12 @@ def api_SUBJECT_ACTIVITY_TRACK():
   
   aid = int(request.args.get('subid')) # Subject ID
   if not user.get('is_admin'):
-    sid = int(user.get('id')) # Student ID
+    sid = int(user.get('id')) # Student ID  
   else:
     sid = int(request.args.get('id'))
   print(sid)
   activities = [dict(activity) for activity in db['activity'].find(subject_id=f"{aid}")]
-  completo = [dict(completed) for completed in db['completedStudentActivity'].find(subject_id=aid, student_id=sid)]
-  print("\033[32m")
-  print(completo)
-  print("\033[0m")
+  completo = [dict(completed) for completed in db['completedStudentActivity'].find(subject_id=aid, student_id=sid, status='complete')]
   _completedID = [int(x['activity_id']) for x in completo]
   
   SUBJECT = current_app.config.get('SUBJECTS').get(aid)
@@ -64,9 +61,10 @@ def adm_api_SET_SUBJECT_ACTIVITY():
     }), 403
   try:
     fg = [dict(
-      activity_id = i,
+      activity_id = f"{i}",
       student_id = student_id,
-      subject_id = subject_id
+      subject_id = subject_id,
+      status = DATA[i]['setto']
     ) for i in DATA]
     print(fg)
     db = current_app.config.get('DATABASE')['completedStudentActivity']

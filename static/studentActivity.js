@@ -53,7 +53,7 @@ const display = (data) => {
     $(ulID).innerHTML = "";
     data[category].forEach(item => {
       $(ulID).innerHTML += `
-        <li id="ariesTae-${item.id}" onclick="clicked(${item.id})" class="bg-white p-3 overflow-auto flex border">
+        <li id="ariesTae-${item.id}" onclick="clicked(${item.id})" class="bg-white p-3 overflow-auto flex border hover:bg-gray-200">
           <div class="pl-1 pr-3 flex items-center justify-center" id="icon-data">
             <span id="icon-${item.id}">${item.status==='complete'?yes:no}</span>
             <input data-category="${category}" id="checker-${item.id}" ${item.status==='complete'?'checked':''} type="checkbox" class="checker hidden">
@@ -93,37 +93,50 @@ const displayEmpty = ({ Activity, Assignment, PETA}) => {
   if (PETA.length < 1) $("#PETA-list").innerHTML = empty;
 }
 
-// TODO: MAY ERROR :(
-//       Kapag pinipindot ang activity na may check na,
-//       dalawang beses bago mag change status
 let changed = {};
+const originalStates = {};
+
 const loadCheckerize = () => {
-  const inputs = document.querySelectorAll('.checker');// input[type=checkbox]
+  const inputs = document.querySelectorAll('.checker');
   inputs.forEach(input => {
-    input.onchange = function(){
-      console.log(changed)
+    const id = parseInt(input.id.split('-')[1]);
+    originalStates[id] = input.checked;
+    input.onchange = function () {
       const id = parseInt(input.id.split('-')[1]);
-      if(changed?.[id]){
-        delete changed[id]
-        $("#icon-"+id).innerHTML = no
-      }else{
-        const $category = input.getAttribute('data-category')
+      const currentChecked = input.checked;
+      const wasChecked = originalStates[id];
+    
+      console.log(`[ID ${id}] Original: ${wasChecked}, Now: ${currentChecked}`);
+    
+      if (currentChecked !== wasChecked) {
         changed[id] = {
           id: id,
-          setto: $category==='complete'?'incomplete':$category
-        }
-        $("#icon-"+id).innerHTML = yes
+          setto: currentChecked ? 'complete' : 'incomplete' // this is correct!
+        };
+        $("#icon-" + id).innerHTML = currentChecked ? yes : no;
+        console.log(`[ID ${id}] Marked as changed`);
+      } else {
+        delete changed[id];
+        $("#icon-" + id).innerHTML = wasChecked ? yes : no;
+        console.log(`[ID ${id}] Reverted to original`);
       }
-      if (Object.keys(changed).length > 0){
+      if (Object.keys(changed).length > 0) {
         $("#save-changes").removeAttribute('disabled');
-      }else{
+      } else {
         $("#save-changes").setAttribute('disabled', '');
       }
-    }
-  })
-}
+    };
+  });
+};
+
+
 
 async function saveChanges(){
+  $("#save-changes").classList.replace('disabled:bg-gray-200', 'disabled:bg-blue-400');
+  $("#save-changes").innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 animate-spin">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+    </svg> Loading`;
   try{
     const res = await fetch(`/admin/api/set/subject-activity`, {
       method: 'POST',
@@ -135,12 +148,11 @@ async function saveChanges(){
       })
     })
     const data = await res.json()
-    console.log(data)
   }catch(err){
     console.error("[120]: ", err)
-  }finally{
-    //location.reload()
+    return
   }
+  location.reload()
 }
 
 async function init(){
