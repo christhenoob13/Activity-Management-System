@@ -49,10 +49,10 @@
         <div class="h-12 bg-gray-200 mb-1"></div>
       </div>
     </div>
-    <div id="data-items" class="hidden bg-gray-100 p-2 rounded-lg border grid md:grid-cols-2 gap-2">
+    <div id="data-items" class="hidden bg-gray-100 p-2 rounded-lg border gap-2">
       <div>
         <h3 class="text-md text-emerald-700 m-2 mb-1">Activities</h3>
-        <ul id="activity-list">
+        <ul id="activity-list" class="grid md:grid-cols-2">
           <!--<li class="bg-white p-3 border overflow-auto flex">
             <div class="pl-1 pr-3 flex items-center justify-center">
               <input type="checkbox" class="accent-green-500">
@@ -64,7 +64,7 @@
           </li>-->
         </ul>
       </div>
-      <div>
+      <div class="hidden">
         <h3 class="text-md text-emerald-700 m-2 mb-1">Assignments</h3>
         <ul id="assignment-list">
           <!--<li class="bg-white p-3 border overflow-auto flex">
@@ -78,7 +78,7 @@
           </li>-->
         </ul>
       </div>
-      <div class="md:col-span-2">
+      <div class="md:col-span-2 hidden">
         <h3 class="text-md text-emerald-700 m-2 mb-1">Performance Task</h3>
         <ul id="PETA-list" class="md:grid md:grid-cols-2">
           <!--<li class="bg-white p-3 border overflow-auto flex">

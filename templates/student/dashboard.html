@@ -7,7 +7,7 @@
   {% for subject in subjects %}
   <li class="list-subject">
     <div>
-      <p class="text-md text-emerald-900">{{ subjects[subject].subject }}</p>
+      <p class="text-md text-emerald-50">{{ subjects[subject].subject }}</p>
       <p class="text-xs text-gray-400">{{ subjects[subject].teacher }}</p>
     </div>
     <div>
@@ -31,10 +31,10 @@
 {% block jss %}
 <style type="text/tailwindcss">
   .list-subject{
-    @apply bg-emerald-50 p-2 px-3 rounded-md border flex justify-between items-center gap-2
+    @apply bg-emerald-800 p-2 px-3 rounded-md border flex justify-between items-center gap-2
   }
   .redirect-btn{
-    @apply border border-green-800 text-green-800 hover:bg-green-800 hover:text-green-100 py-2 px-3 rounded-full text-sm
+    @apply border border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-green-800 py-2 px-3 rounded-full text-sm
   }
 </style>
 {% endblock %}

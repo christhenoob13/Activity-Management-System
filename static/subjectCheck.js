@@ -18,15 +18,15 @@ async function init(){
 }
 
 function displayActivities(){
-  const category = $("#filterCategory").value;
+  const category = "Activity"//$("#filterCategory").value;
   const div_complete = $("#list-complete");
   const div_incomplete = $("#list-incomplete");
   
   div_complete.innerHTML = "";
   div_incomplete.innerHTML = "";
   
-  COMPLETE.filter(items => items.category===category).forEach(item => LIST(item, div_complete, 'complete'));
-  INCOMPLETE.filter(items => items.category===category).forEach(item => LIST(item, div_incomplete, 'incomplete'));
+  COMPLETE.forEach(item => LIST(item, div_complete, 'complete'));
+  INCOMPLETE.forEach(item => LIST(item, div_incomplete, 'incomplete'));
   checkEmpy(div_complete, div_incomplete)
 }
 
@@ -60,7 +60,7 @@ const LIST = (activity, ul, status) => {
 
   const icon = document.createElement('div');
   icon.classList.add('aykon');
-  icon.innerHTML = icons[activity.category];
+  icon.innerHTML = icons.Activity;
 
   iconWrapper.appendChild(icon);
   li.appendChild(iconWrapper);
@@ -107,7 +107,7 @@ function openModal(id, $base){
             <p class="text-xs text-gray-600" id="modalDate"><!--DATE--></p>
           </div>
           <div class="bg-gray-100 p-2 rounded-sm">
-            <h4 class="text-sm font-bold text-gray-700">Instructions:</h4>
+            <h4 class="text-sm font-bold text-gray-700">Description:</h4>
             <p class="text-sm text-gray-700" id="modalInstructions"><!--INSTRUCTION--></p>
           </div>
         </div>
@@ -119,10 +119,10 @@ function openModal(id, $base){
   const modalBox = $('#modalBox');
   const data = $base.find(item => item.id===id);
   
-  $("#modalCategory").textContent = data.category === "PETA" ? "Performance Task":data.category;
+  $("#modalCategory").textContent = "Activity" //data.category === "PETA" ? "Performance Task":data.category;
   $("#modalTitle").textContent = data.title;
   $("#modalDate").textContent = data.date;
-  $("#modalInstructions").innerHTML = data.description.replace(/\n/g, "<br>");
+  $("#modalInstructions").innerHTML = data.description.replace(/\n/g, "<br>") || "No description.";
   modalOverlay.classList.remove('hidden');
   setTimeout(()=>{
     modalBox.classList.remove('-translate-y-10', 'opacity-0');

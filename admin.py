@@ -24,7 +24,7 @@ def dashboard():
   db = current_app.config.get("DATABASE")
   accounts_count = len([i for i in db['accounts']])
   activity_count = len([i for i in db['activity']])
-  return render_template("admin/dashboard.html", accounts_count=accounts_count, subjects_count=subjects_count, activity_count=activity_count)
+  return render_template("admin/dashAccount.html", accounts_count=accounts_count, subjects_count=subjects_count, activity_count=activity_count)
 
 
 """ADMIN PAGES"""

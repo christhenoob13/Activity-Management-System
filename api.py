@@ -31,16 +31,14 @@ def api_SUBJECT_ACTIVITY_TRACK():
     sid = int(user.get('id')) # Student ID  
   else:
     sid = int(request.args.get('id'))
-  print(sid)
   activities = [dict(activity) for activity in db['activity'].find(subject_id=f"{aid}")]
+  
   completo = [dict(completed) for completed in db['completedStudentActivity'].find(subject_id=aid, student_id=sid, status='complete')]
   _completedID = [int(x['activity_id']) for x in completo]
-  
   SUBJECT = current_app.config.get('SUBJECTS').get(aid)
   COMPLETE_ACTIVITIES, INCOMPLETE_ACTIVITIES = [], []
   for activity in activities:
     (COMPLETE_ACTIVITIES if activity['id'] in _completedID else INCOMPLETE_ACTIVITIES).append(activity)
-  
   return jsonify({
     "subject": SUBJECT,
     "complete": COMPLETE_ACTIVITIES,
@@ -132,7 +130,7 @@ def adm_api_ACTIVITY_DATA():
       "message": 'Invalid subject id'
     }), 2018
   db = current_app.config.get('DATABASE')['activity']
-  data = sorted([dict(x) for x in db.find(subject_id=str(subject_id))], key=lambda y: y['category'])
+  data = sorted([dict(x) for x in db.find(subject_id=str(subject_id))], key=lambda y: "Activity")
   return jsonify({"status":'success',"data":data}), 200
 
 @adm_api.route('/delete-activity', methods=['GET'])

@@ -56,15 +56,15 @@ const openModal = () => {
             </span>
             <p class="text-sm" id="francisco"><!-- error message dito --></p>
           </div>
-          
+          <!--
           <label for="category" class="text-sm text-gray-500">Category <i>(required)</i></label><br>
           <select id="category" class="p-3 bg-white border text-sm rounded-xl w-full">
             <option value="Activity">Activity</option>
-            <option value="Assignment">Assignment</option>
+            <option value="Quiz">Quiz</option>
             <option value="PETA">Performance Task</option>
           </select>
-          
           <br><br>
+          -->
           <label for="date" class="text-sm text-gray-500">Date <i>(required)</i></label><br>
           <input required id="date" type="date" class="p-3 bg-white border text-sm rounded-xl w-full">
           
@@ -100,7 +100,7 @@ async function newActivity(){
     </svg> Loading`
     let error_mess = $("#error_message_activity");
     let box = $("#francisco");
-    const category = $("#category");
+    const category = "Activity";//$("#category");
     const date = $("#date");
     const title = $("#title");
     const description = $("#description");
@@ -117,7 +117,7 @@ async function newActivity(){
       },
       body: JSON.stringify({
         title: title.value.trim(),
-        category: category.value,
+        category: category,
         description: description.value.trim(),
         subject_id: subject.value,
         date: date.value
